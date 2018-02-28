@@ -14,6 +14,7 @@ import com.shilec.leshowad.dao.helper.IDatabaseHelper;
 import com.shilec.leshowad.dao.helper.MySqlManager;
 import com.shilec.leshowad.moudle.UserInfo;
 import com.shilec.leshowad.utils.ConfigUtils;
+import com.shilec.leshowad.utils.Log;
 
 /**
  * Servlet implementation class LoginService
@@ -21,39 +22,49 @@ import com.shilec.leshowad.utils.ConfigUtils;
 @WebServlet("/login")
 public class LoginService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginService() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ConfigUtils.init(getServletContext().getRealPath("/"));
-
-		IDatabaseHelper<UserInfo> helper = MySqlManager.getInstance().getHelper(UserInfo.class);
-		
-		UserInfo info = new UserInfo();
-		info.setWx_id("ÊÇÈö´óÉùµØ");
-		info.setBalance(911111119.112f);
-		info.setWx_user_name("Ê®Àë¼Ò°¢ÈøµÂ");
-		info.setWx_location("adasda");
-		helper.add(info);
-		
-		List<UserInfo> loadAll = helper.loadAll();
-		
-		PrintWriter writer = response.getWriter();
-		writer.write(loadAll.toString());
+	public LoginService() {
+		super();
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			Log.init(getServletContext().getRealPath("/"));
+			ConfigUtils.init(getServletContext().getRealPath("/"));
+			System.out.println("save Path ========= " + getServletContext().getRealPath("/"));
+			;
+			IDatabaseHelper<UserInfo> helper = MySqlManager.getInstance().getHelper(UserInfo.class);
+
+			UserInfo info = new UserInfo();
+			info.setWx_id("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+			info.setBalance(911111119.112f);
+			info.setWx_user_name("Ê®ï¿½ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½");
+			info.setWx_location("adasda");
+			helper.add(info);
+
+			List<UserInfo> loadAll = helper.loadAll();
+
+			PrintWriter writer = response.getWriter();
+			writer.write(loadAll.toString());
+		} catch (Exception e) {
+			e.printStackTrace(response.getWriter());
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
