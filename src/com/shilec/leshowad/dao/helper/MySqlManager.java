@@ -11,6 +11,7 @@ import com.shilec.leshowad.dao.anno.Dao;
 import com.shilec.leshowad.moudle.RedPacket;
 import com.shilec.leshowad.moudle.ShareMap;
 import com.shilec.leshowad.moudle.UserInfo;
+import com.shilec.leshowad.utils.Log;
 
 
 
@@ -51,13 +52,24 @@ public class MySqlManager {
 			.append("is_expire bool")
 			.append(")");
 	
+	final StringBuilder T_AD_TEMPLATE = new StringBuilder()
+			.append("CREATE TABLE IF NOT EXISTS ")
+			.append("t_ad_template(")
+			.append("id integer not null primary key auto_increment,")
+			.append("title varchar(256),")
+			.append("ad_desc varchar(1000),")
+			.append("images varchar(1024),")
+			.append("bk_music varchar(256),")
+			.append("html_templete varchar(256)")
+			.append(")");
+	
 	private static MySqlManager sManager = new MySqlManager();
 	
 	
 	public <T> IDatabaseHelper<T> getHelper(Class<T> cls) {
 		Dao annotation = cls.getAnnotation(Dao.class);
 		if(annotation == null) {
-			return null;
+			return  null;
 		}
 		Class<?> dao = annotation.value();
 		if(dao == null) {
@@ -83,9 +95,12 @@ public class MySqlManager {
 		Connection connc = MySqlConHelper.getInstance().getConnection();
 		try {
 			Statement statement = connc.createStatement();
+			Log.i("t_ad_template = " + T_AD_TEMPLATE.toString());
+
 			statement.execute(T_USER.toString());
 			statement.execute(T_SHARE_MAP.toString());
 			statement.execute(T_RED_PACKET.toString());
+			statement.execute(T_AD_TEMPLATE.toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

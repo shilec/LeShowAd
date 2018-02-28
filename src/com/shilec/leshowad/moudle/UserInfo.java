@@ -1,7 +1,7 @@
 package com.shilec.leshowad.moudle;
 
+import com.shilec.leshowad.dao.UserDao;
 import com.shilec.leshowad.dao.anno.*;
-import com.shilec.leshowad.dao.helper.UserDao;
 
 @Table("t_user")
 @Dao(UserDao.class)

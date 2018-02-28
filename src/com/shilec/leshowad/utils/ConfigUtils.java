@@ -10,15 +10,19 @@ public class ConfigUtils {
 	
 	private static String mBasePath;
 	
-	private static String CONFIG_READL_PATH;
+	private static String CONFIG_REAL_PATH;
+	
+	public static void test() {
+		CONFIG_REAL_PATH = CONFIG_PATH;
+	}
 	
 	public static void init(String basePath) {
 		mBasePath = basePath;
-		CONFIG_READL_PATH = mBasePath + "WEB-INF" + File.separator + CONFIG_PATH; 
+		CONFIG_REAL_PATH = mBasePath + "WEB-INF" + File.separator + CONFIG_PATH;
 	}
 	
 	public static String get(String k) {
-		byte[] read = FileUtils.read(CONFIG_READL_PATH);
+		byte[] read = FileUtils.read(CONFIG_REAL_PATH);
 		String json = new String(read);
 		
 		JSONObject jObj = JSONObject.fromObject(json);
@@ -27,7 +31,7 @@ public class ConfigUtils {
 	}
 	
 	public static void set(String k,String v) {
-		byte[] read = FileUtils.read(CONFIG_READL_PATH);
+		byte[] read = FileUtils.read(CONFIG_REAL_PATH);
 		String json = new String(read);
 		
 		JSONObject jObj = JSONObject.fromObject(json);
@@ -37,6 +41,6 @@ public class ConfigUtils {
 			jObj.put(k, v);
 		}
 		json = jObj.toString();
-		FileUtils.write(json.getBytes(), CONFIG_READL_PATH);
+		FileUtils.write(json.getBytes(), CONFIG_REAL_PATH);
 	}
 }

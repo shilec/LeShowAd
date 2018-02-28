@@ -31,6 +31,7 @@ public class MySqlConHelper {
 		try {
 			Class.forName(DRIVER_NAME);
 			mConn = DriverManager.getConnection(DB_URL + DB_NAME, mUserName,mPsw);
+			Log.i("connection userName = " + mUserName + ",passwd = " + mPsw);
 			if(mConn.isClosed()) {
 				Log.i("db connection create error!");
 			}

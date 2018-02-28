@@ -40,7 +40,7 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		return mTableName;
 	}
 	
-	BaseDatabaseHelper() {
+	public BaseDatabaseHelper() {
 		//获取泛型实际类型
 		Class<?> clazz = (Class<?>) ((ParameterizedType) getClass().
 				getGenericSuperclass()).getActualTypeArguments()[0];
@@ -127,21 +127,6 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		builder.append(")");
 		
 		return builder.toString();
-	}
-	
-	private int getId(T t) {
-		Class cls = t.getClass();
-		for(Field field : cls.getDeclaredFields()) {
-			if(field.getAnnotation(Id.class) != null) {
-				try {
-					Object object = field.get(t);
-					return Integer.parseInt(object.toString());
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return -1;
 	}
 	
 	private void setData(T t,PreparedStatement statement) {

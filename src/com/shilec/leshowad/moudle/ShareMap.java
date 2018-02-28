@@ -2,10 +2,10 @@ package com.shilec.leshowad.moudle;
 
 import java.util.List;
 
+import com.shilec.leshowad.dao.ShareMapDao;
 import com.shilec.leshowad.dao.anno.Dao;
 import com.shilec.leshowad.dao.anno.Id;
 import com.shilec.leshowad.dao.anno.Table;
-import com.shilec.leshowad.dao.helper.ShareMapDao;
 
 /**
  * 分享一次可领取一个红包

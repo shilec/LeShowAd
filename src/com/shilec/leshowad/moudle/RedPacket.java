@@ -2,10 +2,10 @@ package com.shilec.leshowad.moudle;
 
 import java.util.List;
 
+import com.shilec.leshowad.dao.RedPacketDao;
 import com.shilec.leshowad.dao.anno.Dao;
 import com.shilec.leshowad.dao.anno.Id;
 import com.shilec.leshowad.dao.anno.Table;
-import com.shilec.leshowad.dao.helper.RedPacketDao;
 
 @Table("t_red_packet")
 @Dao(RedPacketDao.class)

@@ -49,14 +49,15 @@ public class FileUtils {
 	
 	
 	public static void write(byte[] buf,String path) {
+		write(buf, path, false);
+	}
+	
+	public static void write(byte[] buf,String path,boolean append) {
 		File file = new File(path);
-		if(!file.exists()) {
-			return;
-		}
 		
 		OutputStream os =  null;
 		try {
-			os = new FileOutputStream(file);
+			os = new FileOutputStream(file,append);
 			os.write(buf);
 			
 			os.flush();

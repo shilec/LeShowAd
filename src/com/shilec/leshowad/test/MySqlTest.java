@@ -7,6 +7,7 @@ import java.util.List;
 import com.shilec.leshowad.dao.helper.IDatabaseHelper;
 import com.shilec.leshowad.dao.helper.MySqlManager;
 import com.shilec.leshowad.moudle.UserInfo;
+import com.shilec.leshowad.utils.ConfigUtils;
 
 public class MySqlTest {
 
