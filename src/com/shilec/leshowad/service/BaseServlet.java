@@ -34,6 +34,7 @@ public abstract class BaseServlet extends HttpServlet{
 		WebServlet annotation = getClass().getAnnotation(WebServlet.class);
 		Log.debug("ano = " + annotation.value()[0]);
 		
+		//除了登录接口，其他接口没登录 访问返回NOT_LOGIN 
 		if(userInfo == null && !annotation.value()[0].equals("/login")) {
 			JSONObject jObject = new JSONObject();
 			jObject.put("code", Contacts.RESPONSE_CODE.NOT_LOGIN);

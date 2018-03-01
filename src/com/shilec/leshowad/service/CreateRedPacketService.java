@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.shilec.leshowad.utils.Contacts;
 
 /**
- * Servlet implementation class CreateRedPacketService
+ * 创建红包接口
  */
 @WebServlet("/create_red_packet")
 public class CreateRedPacketService extends BaseServlet {

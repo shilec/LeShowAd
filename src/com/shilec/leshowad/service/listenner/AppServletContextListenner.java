@@ -9,7 +9,7 @@ import com.shilec.leshowad.utils.ConfigUtils;
 import com.shilec.leshowad.utils.Log;
 
 /**
- * Application Lifecycle Listener implementation class AppServletContextListenner
+ * AppContext 监听器，初始化配置
  *
  */
 @WebListener
@@ -24,7 +24,9 @@ public class AppServletContextListenner implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0)  { 
     	//初始化配置
     	ConfigUtils.init(arg0.getServletContext().getRealPath("/"));
+    	//初始化日志
     	Log.init(arg0.getServletContext().getRealPath("/"));
+    	//数据库初始化，数据表的创建等
     	MySqlManager.init();
     	Log.i2file("servlet create ===============");
     }

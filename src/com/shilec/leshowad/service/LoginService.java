@@ -22,7 +22,7 @@ import com.shilec.leshowad.utils.Log;
 import net.sf.json.JSONObject;
 
 /**
- * Servlet implementation class LoginService
+ * µÇÂ¼½Ó¿Ú
  */
 @WebServlet({"/login","/logout"})
 public class LoginService extends BaseServlet {
