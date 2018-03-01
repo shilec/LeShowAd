@@ -46,18 +46,23 @@ public class Log {
 		return stringBuilder.toString();
 	}
 	
-	public static void i(String msg) {
+	public static void debug(String msg) {
 		if(DEBUG) {
 			Throwable throwable = new Throwable();
 			sLogger.info(getMsg(throwable, msg,1));
-			mThreadPool.execute(new Runnable() {
-				
-				@Override
-				public void run() {
-					log2file(getMsg(throwable, msg,1));
-				}
-			});
 		}
+	}
+	
+	public static void i2file(String msg) {
+		Throwable throwable = new Throwable();
+		sLogger.info(getMsg(throwable, msg,1));
+		mThreadPool.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				log2file(getMsg(throwable, msg,1));
+			}
+		});
 	}
 	
 	private static void log2file(String msg) {

@@ -14,7 +14,6 @@ import com.shilec.leshowad.moudle.UserInfo;
 import com.shilec.leshowad.utils.Log;
 
 
-
 public class MySqlManager {
 	
 	final StringBuilder T_USER = new StringBuilder()
@@ -95,7 +94,7 @@ public class MySqlManager {
 		Connection connc = MySqlConHelper.getInstance().getConnection();
 		try {
 			Statement statement = connc.createStatement();
-			Log.i("t_ad_template = " + T_AD_TEMPLATE.toString());
+			Log.i2file("t_ad_template = " + T_AD_TEMPLATE.toString());
 
 			statement.execute(T_USER.toString());
 			statement.execute(T_SHARE_MAP.toString());

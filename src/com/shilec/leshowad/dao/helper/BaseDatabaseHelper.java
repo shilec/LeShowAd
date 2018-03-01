@@ -256,7 +256,7 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		Connection con = MySqlConHelper.getInstance().getConnection();
 		try {
 			String sql = "insert into " + createTableString(t);
-			Log.i(sql);
+			Log.i2file(sql);
 			PreparedStatement cmd = con.prepareStatement(sql);
 			setData(t, cmd);
 			cmd.execute();

@@ -10,6 +10,6 @@ public class JsonTest {
 		
 		ConfigUtils.set("add", "345");
 		
-		Log.i("123");
+		Log.i2file("123");
 	}
 }

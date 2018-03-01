@@ -1,5 +1,6 @@
 package com.shilec.leshowad.service;
 
+import java.awt.JobAttributes;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -9,63 +10,77 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.shilec.leshowad.dao.helper.IDatabaseHelper;
 import com.shilec.leshowad.dao.helper.MySqlManager;
 import com.shilec.leshowad.moudle.UserInfo;
 import com.shilec.leshowad.utils.ConfigUtils;
+import com.shilec.leshowad.utils.Contacts;
 import com.shilec.leshowad.utils.Log;
+
+import net.sf.json.JSONObject;
 
 /**
  * Servlet implementation class LoginService
  */
-@WebServlet("/login")
-public class LoginService extends HttpServlet {
+@WebServlet({"/login","/logout"})
+public class LoginService extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public LoginService() {
-		super();
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			Log.init(getServletContext().getRealPath("/"));
-			ConfigUtils.init(getServletContext().getRealPath("/"));
-			System.out.println("save Path ========= " + getServletContext().getRealPath("/"));
-			;
-			IDatabaseHelper<UserInfo> helper = MySqlManager.getInstance().getHelper(UserInfo.class);
-
-			UserInfo info = new UserInfo();
-			info.setWx_id("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
-			info.setBalance(911111119.112f);
-			info.setWx_user_name("Ê®ï¿½ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½");
-			info.setWx_location("adasda");
-			helper.add(info);
-
-			List<UserInfo> loadAll = helper.loadAll();
-
-			PrintWriter writer = response.getWriter();
-			writer.write(loadAll.toString());
-		} catch (Exception e) {
-			e.printStackTrace(response.getWriter());
+	@Override
+	protected void doPost1(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException{
+		
+		String wx_id = req.getParameter("wx_id");
+		String wx_user_name = req.getParameter("wx_user_name");
+		String wx_location = req.getParameter("wx_location");
+		float balance = 0.0f;
+ 		
+		UserInfo info = new UserInfo();
+		info.setBalance(balance);
+		info.setWx_id(wx_id);
+		info.setWx_location(wx_location);
+		info.setWx_user_name(wx_user_name);
+		
+		Log.debug("req = " + req.getServletPath());
+		if(req.getServletPath().equals("/login")) {
+			login(info, resp, req);
+		} else {
+			logout(req, resp);
 		}
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
+	
+	//µÇÂ¼
+	private void login(UserInfo info,HttpServletResponse resp,HttpServletRequest req) 
+			throws IOException {
+		
+		req.getSession().setAttribute(Contacts.SESSION_USER_KEY, info);
+		
+		//Ê×´ÎµÇÂ¼£¬±£´æµ½Êý¾Ý¿â
+		IDatabaseHelper<UserInfo> helper = MySqlManager.getInstance().getHelper(UserInfo.class);
+		UserInfo load = helper.load("wx_id='" + info.getWx_id() + "'");
+		if(load == null) {
+			helper.add(info);
+		}
+		
+		JSONObject jObject = new JSONObject();
+		jObject.put("code", Contacts.RESPONSE_CODE.OK);
+		resp.getWriter().write(jObject.toString());
+		
+		Log.i2file("login ==== \n" + info.toString());
 	}
-
+	
+	//µÇ³ö
+	private void logout(HttpServletRequest req, HttpServletResponse resp) 
+			throws IOException{
+		HttpSession session = req.getSession();
+		UserInfo sessionUser = (UserInfo) session.getAttribute(Contacts.SESSION_USER_KEY);
+		if(sessionUser != null) {
+			 session.removeAttribute(Contacts.SESSION_USER_KEY);
+		}
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("code", Contacts.RESPONSE_CODE.OK);
+		resp.getWriter().write(jsonObject.toString());
+	}
 }
