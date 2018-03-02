@@ -18,6 +18,7 @@ public class MySqlTest {
 //		for(Field f:class1.getDeclaredFields()) {
 //			System.out.println("name = " + f.getName() + ",type = " + f.getType().getSimpleName());
 //		}
+		ConfigUtils.test();
 		
 		IDatabaseHelper<UserInfo> helper = MySqlManager.getInstance().getHelper(UserInfo.class);
 		

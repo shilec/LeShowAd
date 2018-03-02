@@ -15,6 +15,8 @@
 	<classpathentry kind="lib" path="libs/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="libs/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="libs/okhttp-3.10.0.jar"/>
+	<classpathentry kind="lib" path="libs/okio-1.14.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="D:/apache-tomcat-7.0.82/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>

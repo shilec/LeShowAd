@@ -40,6 +40,76 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		return mTableName;
 	}
 	
+	//根据Table 注解创建数据表
+	private void autoCreateTable() {
+		StringBuilder sqlBuilder = new StringBuilder()
+				.append("CREATE TABLE IF NOT EXISTS ")
+				.append(mTableName + "(")
+				.append("id integer not null primary key auto_increment,");
+		Field[] fields = mClass.getDeclaredFields();
+		for(Field field : fields) {
+			if(field.getAnnotation(Ignore.class) != null) {
+				continue;
+			}
+			
+			if(field.getAnnotation(Id.class) != null) {
+				continue;
+			}
+			
+			String javaType = field.getType().getSimpleName();
+			String key = field.getName();
+			//如果有Field 注解 ，则使用Field 的value 作为数据库字段名
+			if(field.getAnnotation(com.shilec.leshowad.dao.anno.Field.class) != null) {
+				key = field.getAnnotation(com.shilec.leshowad.dao.anno.Field.class).value();
+			}
+			sqlBuilder.append(key + " " + getSqlTypeByJavaType(javaType) + ",");
+		}
+		String sql = sqlBuilder.toString().substring(0,
+				sqlBuilder.toString().length() - 1);
+		sql += ")";
+		Log.debug("sql = " + sql);
+		
+		createTable(sql);
+	}
+	
+	private void createTable(String sql) {
+		Connection connc = MySqlConHelper.getInstance().getConnection();
+		try {
+			Statement statement = connc.createStatement();
+			statement.execute(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	} 
+	
+	//java 中的类型和mysql中的数据类型 映射
+	private String getSqlTypeByJavaType(String javaType) {
+		switch(javaType) {
+		case  "String":
+			return "text";
+		case "Integer":
+		case "int":
+			return "int";
+		case "Float":
+		case "float":
+			return "float";
+		case "Long":
+		case "long":
+			return "long";
+		case "Boolean":
+		case "boolean":
+			return "bool";
+		default:
+			return null;
+		}
+	}
+	
 	public BaseDatabaseHelper() {
 		//获取泛型实际类型
 		Class<?> clazz = (Class<?>) ((ParameterizedType) getClass().
@@ -49,13 +119,14 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		Dao dao = clazz.getAnnotation(Dao.class);
 		
 		if(dao == null) {
-			throw new MissAnnotionException("missing Dao Annotion!");
+ 
 		}
 		
 		if(annotation == null) {
 			throw new MissAnnotionException("missing Table Annotion!");
 		}
 		
+		//是否有主键
 		Field[] fields = clazz.getDeclaredFields();
 		boolean isHaveMainKey = false;
 		for(Field field : fields) {
@@ -66,13 +137,13 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		}
 		
 		if(!isHaveMainKey) {
-			throw new MoudleNotHaveMainKeyException("missing main key!");
+			throw new MoudleNotHaveMainKeyException("miss main key!");
 		}
 		
 		if(annotation != null && annotation.value() != null && annotation.value() != "") {
 			mTableName = annotation.value();
 		}
-		
+		autoCreateTable();
 	}
 	
 	private String createTableString(T t) {
@@ -129,6 +200,11 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		return builder.toString();
 	}
 	
+	/**
+	 * 把moudle中的值和字段 添加到 PreparedStatement
+	 * @param t
+	 * @param statement
+	 */
 	private void setData(T t,PreparedStatement statement) {
 		Class<?> tCls = t.getClass();
 		Field[] declaredFields = tCls.getDeclaredFields();
@@ -170,7 +246,7 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 	private void setValue(int index,String typeName,Object value,PreparedStatement statement) throws SQLException {
 		switch(typeName) {
 		case "String":
-			statement.setString(index, value.toString());
+			statement.setString(index, value == null ? "" : value.toString());
 			break;
 		case "boolean":
 		case "Boolean":
@@ -191,6 +267,11 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		}
 	}
 	
+	/**
+	 * 从cursor 中读出的值，保存到moudle
+	 * @param resultSet
+	 * @return moudle
+	 */
 	private T getData(ResultSet resultSet) {
 		Field[] fields = mClass.getDeclaredFields();
 		T t = null;

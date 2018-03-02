@@ -6,9 +6,15 @@ public class Contacts {
 	
 	public static final String SESSION_USER_KEY = "user";
 	
+	public static final String MINI_PROGRAM_APPID = "appid_";
+	
+	public static final String MINI_PROGRAM_SECRET = "secret_";
+	
 	
 	public static interface RESPONSE_CODE {
 		int NOT_LOGIN = 10000;
 		int OK = 0;
+		int MISS_PARAM = 10001;
+		int WX_LOGIN_CODE_INVALID = 10002;
 	}
 }
