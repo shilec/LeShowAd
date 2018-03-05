@@ -18,5 +18,6 @@ public class Contacts {
 		int OK = 0;
 		int MISS_PARAM = 10001;
 		int WX_LOGIN_CODE_INVALID = 10002;
+		int UPLOAD_FILE_ERROR = 10003;
 	}
 }

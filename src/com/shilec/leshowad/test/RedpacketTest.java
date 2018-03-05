@@ -13,7 +13,6 @@ public class RedpacketTest {
 		IDatabaseHelper<RedPacket> helper = MySqlManager.getInstance().getHelper(RedPacket.class);
 		RedPacket red = new RedPacket();
 		red.setAll_money(1232132.1f);
-		red.setAd_id(21);
 		red.setIncome_mode(3);
 		red.setIs_expire(false);
 		red.setPacket_count(1000);

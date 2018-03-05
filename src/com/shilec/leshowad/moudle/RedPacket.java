@@ -22,14 +22,42 @@ public class RedPacket {
 	
 	float leave_money; //剩余金额
 	
-	int ad_id; //广告模板id
-	
 	boolean is_expire; //是否过期
 	
 	@Id
 	int id; //id
 	
 	String wx_id;
+	
+	String title;
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAd_desc() {
+		return ad_desc;
+	}
+
+	public void setAd_desc(String ad_desc) {
+		this.ad_desc = ad_desc;
+	}
+
+	public String getImages() {
+		return images;
+	}
+
+	public void setImages(String images) {
+		this.images = images;
+	}
+
+	String ad_desc;
+	
+	String images;
 
 	public String getLocations() {
 		return locations;
@@ -79,13 +107,6 @@ public class RedPacket {
 		this.leave_money = leave_money;
 	}
 
-	public int getAd_id() {
-		return ad_id;
-	}
-
-	public void setAd_id(int ad_id) {
-		this.ad_id = ad_id;
-	}
 
 	public boolean isIs_expire() {
 		return is_expire;
@@ -110,6 +131,15 @@ public class RedPacket {
 	public void setWx_id(String wx_id) {
 		this.wx_id = wx_id;
 	}
+
+	@Override
+	public String toString() {
+		return "RedPacket [locations=" + locations + ", all_money=" + all_money + ", packet_count=" + packet_count
+				+ ", income_mode=" + income_mode + ", leave_count=" + leave_count + ", leave_money=" + leave_money
+				+ ", is_expire=" + is_expire + ", id=" + id + ", wx_id=" + wx_id + ", title=" + title + ", ad_desc="
+				+ ad_desc + ", images=" + images + "]";
+	}
+	
 	
 	
 }

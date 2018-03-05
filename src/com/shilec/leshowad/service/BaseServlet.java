@@ -3,7 +3,9 @@ package com.shilec.leshowad.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 
 import com.shilec.leshowad.dao.helper.IDatabaseHelper;
 import com.shilec.leshowad.dao.helper.MySqlManager;
@@ -49,6 +53,10 @@ public abstract class BaseServlet extends HttpServlet{
 		try {
 			JSONObject jObject = JSONObject.fromObject(line);
 			wx_login_code = jObject.optString("wx_login_code");
+			Set<String> keys = jObject.keySet();
+			for(String key : keys) {
+				req.setAttribute(key, jObject.opt(key));
+			}
 		} catch (Exception e) {
 			wx_login_code = null;
 		}
