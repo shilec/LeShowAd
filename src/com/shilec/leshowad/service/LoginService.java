@@ -1,11 +1,16 @@
 package com.shilec.leshowad.service;
 
 import java.awt.JobAttributes;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,13 +43,19 @@ public class LoginService extends BaseServlet {
 	@Override
 	protected void doPost1(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException{
+		//读取POST 参数
+		ServletInputStream inputStream = req.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
+		String line = reader.readLine();
+		Log.i2file("POST PARAM === " + line);
 		
-		String wx_login_code = req.getParameter("wx_login_code");
-		String wx_user_name = req.getParameter("wx_user_name");
-		String wx_location = req.getParameter("wx_location");
-		float balance = 0.0f;
-		Log.debug("request = " + wx_login_code);
+		//读取参数
+		JSONObject jObject = JSONObject.fromObject(line);
+		String wx_login_code = jObject.optString("wx_login_code");
+		String wx_user_name = jObject.optString("wx_user_name");
+		String wx_location = jObject.optString("wx_location");
 		
+		//检查
 		if(TextUtils.isEmpty(wx_login_code) || TextUtils.isEmpty(wx_user_name) 
 				|| TextUtils.isEmpty(wx_location)) {
 			
@@ -59,10 +70,11 @@ public class LoginService extends BaseServlet {
 		}
  		
 		UserInfo info = new UserInfo();
-		info.setBalance(balance);
 		info.setWx_location(wx_location);
 		info.setWx_user_name(wx_user_name);
+		info.setWx_login_code(wx_login_code);
 		
+		Log.debug("info = " + info);
 		Log.debug("req = " + req.getServletPath());
 		if(req.getServletPath().equals("/login")) {
 			login(info, wx_login_code,resp, req);
@@ -89,13 +101,15 @@ public class LoginService extends BaseServlet {
 	//保存用户信息到数据库和session
 	private void saveInfo(UserInfo info,HttpServletResponse resp,
 			HttpServletRequest req) throws IOException {
-		req.getSession().setAttribute(Contacts.SESSION_USER_KEY, info);
+		//req.getSession().setAttribute(Contacts.SESSION_USER_KEY, info);
 		//首次登录，保存到数据库
 		IDatabaseHelper<UserInfo> helper = MySqlManager.getInstance().getHelper(UserInfo.class);
 		UserInfo load = helper.load("wx_id='" + info.getWx_id() + "'");
 		Log.debug("exist user = " + load);
 		if(TextUtils.isEmpty(load.getWx_id())) {
 			helper.add(info);
+		} else if(!info.getWx_login_code().equals(load.getWx_login_code())){
+			helper.update(info, new String[] {"wx_login_code"}, "wx_id = '" + info.getWx_id() + "'");
 		}
 		
 		//返回成功
@@ -106,6 +120,7 @@ public class LoginService extends BaseServlet {
 		Log.i2file("login ==== \n" + info.toString());
 	}
 	
+	//通过login_code 获取 openid
 	private String getWxOpenId(String wx_login_code) throws IOException {
 		
 		String appid = ConfigUtils.get(Contacts.MINI_PROGRAM_APPID);

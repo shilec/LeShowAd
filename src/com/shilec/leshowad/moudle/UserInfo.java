@@ -9,6 +9,8 @@ public class UserInfo {
 	
 	String wx_id;
 	
+	String wx_login_code;
+	
 	String wx_user_name;
 	
 	String wx_location;
@@ -56,6 +58,16 @@ public class UserInfo {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	
+
+	public String getWx_login_code() {
+		return wx_login_code;
+	}
+
+	public void setWx_login_code(String wx_login_code) {
+		this.wx_login_code = wx_login_code;
 	}
 
 	@Override

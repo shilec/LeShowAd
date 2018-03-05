@@ -10,6 +10,8 @@ public class Contacts {
 	
 	public static final String MINI_PROGRAM_SECRET = "secret_";
 	
+	public static final String WX_LOGIN_CODE = "wx_login_code";
+	
 	
 	public static interface RESPONSE_CODE {
 		int NOT_LOGIN = 10000;
