@@ -10,6 +10,7 @@ public class ConfigUtils {
 	
 	private static String mBasePath;
 	
+	
 	private static String CONFIG_REAL_PATH;
 	
 	public static void test() {
@@ -42,5 +43,10 @@ public class ConfigUtils {
 		}
 		json = jObj.toString();
 		FileUtils.write(json.getBytes(), CONFIG_REAL_PATH);
+	}
+
+	public static String getRootPath() {
+		// TODO Auto-generated method stub
+		return mBasePath;
 	}
 }
