@@ -51,10 +51,16 @@ public class CreateRedPacketService extends BaseServlet {
 		redPacket.setPacket_count(Integer.parseInt(req.getAttribute("count").toString()));
 		redPacket.setLeave_count(redPacket.getPacket_count());
 		redPacket.setLeave_money(redPacket.getAll_money());
-		redPacket.setLocations(req.getAttribute("location_limit").toString());
-		redPacket.setAd_desc(req.getAttribute("red_packet_desc").toString());
+		if(req.getAttribute("location_limit") != null) {
+			redPacket.setLocations(req.getAttribute("location_limit").toString());
+		}
+		
+		if(req.getAttribute("red_packet_desc") != null) {
+			redPacket.setAd_desc(req.getAttribute("red_packet_desc").toString());
+		}
 		redPacket.setTitle(req.getAttribute("title").toString());
 		redPacket.setImages(req.getAttribute("image_path").toString());
+		redPacket.setCreate_date(Long.parseLong(req.getAttribute("create_date").toString()));
 		Log.debug("redPakcetInfo == " + redPacket);
 		helper.add(redPacket);
 		

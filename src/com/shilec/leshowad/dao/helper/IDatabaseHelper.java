@@ -34,7 +34,11 @@ public interface IDatabaseHelper<T> {
 	
 	List<T> loadAll();
 	
+	List<T> loadAll(String where,String order);
+	
 	T load(String where);
 	
 	List<T> loadSome(String where);
+	
+	List<T> loadSome(String where,String order);
 }

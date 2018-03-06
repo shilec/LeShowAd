@@ -83,7 +83,7 @@ public class UploadService extends BaseServlet {
 	private String saveImagFile(String fileName, String bundary, String wx_id, HttpServletRequest req)
 			throws Exception {
 	
-		File file = new File(ConfigUtils.getRootPath() + File.separator + "upload");
+		File file = new File(ConfigUtils.getUploadFileRoot());
 		if (!file.exists()) {
 			file.mkdirs();
 		}

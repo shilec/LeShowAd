@@ -49,4 +49,13 @@ public class ConfigUtils {
 		// TODO Auto-generated method stub
 		return mBasePath;
 	}
+	
+	public static String getUploadFileRoot() {
+		String uploadRootPath = new File(mBasePath).getParent() + File.separator + "upload";
+		File file = new File(uploadRootPath);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+		return uploadRootPath;
+	}
 }

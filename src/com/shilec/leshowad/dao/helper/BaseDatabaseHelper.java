@@ -403,6 +403,9 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 			Statement cmd = connection.createStatement();
 			String sql = "select * from " + mTableName + " where " + where;
 			ResultSet resultSet = cmd.executeQuery(sql);
+			if(resultSet == null) {
+				return null;
+			}
 			resultSet.next();
 			T t = getData(resultSet);
 			cmd.close();
@@ -424,33 +427,7 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 
 	@Override
 	public List<T> loadSome(String where) {
-		Connection connection = MySqlConHelper.getInstance().getConnection();
-		List<T> ts = new ArrayList<>();
-		try {
-			Statement cmd = connection.createStatement();
-			String sql = "select * from " + mTableName;
-			if(where != null && where != "") {
-				sql += " where " + where;
-			}
-			ResultSet result = cmd.executeQuery(sql);
-			while(result.next()) {
-				T t = getData(result);
-				ts.add(t);
-			}
-			cmd.close();
-			return ts;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if(connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
+		return loadSome(where,null);
 	}
 
 
@@ -624,6 +601,49 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<T> loadAll(String where, String order) {
+		return loadSome(null, order);
+	}
+
+	@Override
+	public List<T> loadSome(String where, String order) {
+		Connection connection = MySqlConHelper.getInstance().getConnection();
+		List<T> ts = new ArrayList<>();
+		try {
+			Statement cmd = connection.createStatement();
+			String sql = "select * from " + mTableName;
+			if(where != null && where != "") {
+				sql += " where " + where;
+			}
+			if(order != null && order != "") {
+				sql += " order " + order;
+			}
+			
+			ResultSet result = cmd.executeQuery(sql);
+			if(result == null) {
+				return null;
+			}
+			while(result.next()) {
+				T t = getData(result);
+				ts.add(t);
+			}
+			cmd.close();
+			return ts;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
 	} 
 
 }

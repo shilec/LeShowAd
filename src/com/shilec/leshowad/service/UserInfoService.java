@@ -32,7 +32,8 @@ public class UserInfoService extends BaseServlet{
 		
 		UserInfo sessionUser = (UserInfo) req.getSession().getAttribute(Contacts.SESSION_USER_KEY);
 		UserInfo userInfo = helper.load("wx_id='" + sessionUser.getWx_id() + "'");
-		JSONObject jObject = JSONObject.fromObject(userInfo);
+		JSONObject jObject = new JSONObject();
+		jObject.put("info", userInfo);
 		jObject.put("code", Contacts.RESPONSE_CODE.OK);
 		resp.getWriter().write(jObject.toString());
 	}

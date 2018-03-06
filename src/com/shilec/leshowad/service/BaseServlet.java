@@ -36,13 +36,13 @@ public abstract class BaseServlet extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Log.i2file(req.toString());
 
 		WebServlet annotation = getClass().getAnnotation(WebServlet.class);
 		//如果login/logout/upload 不验证wx_login_code
 		Log.debug("ano = " + annotation.value()[0]);
 		if (annotation.value()[0].equals("/login") || 
-				annotation.value()[0].equals("/upload")) {
+				annotation.value()[0].equals("/upload")||
+				annotation.value()[0].equals("/download")) {
 			doPost1(req, resp);
 			return;
 		}
