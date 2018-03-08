@@ -15,6 +15,8 @@ public class UserInfo {
 	
 	String wx_location;
 	
+	String wx_head_icon;
+	
 	float balance;
 	
 	@Id
@@ -70,11 +72,20 @@ public class UserInfo {
 		this.wx_login_code = wx_login_code;
 	}
 
+	public String getWx_head_icon() {
+		return wx_head_icon;
+	}
+
+	public void setWx_head_icon(String wx_head_icon) {
+		this.wx_head_icon = wx_head_icon;
+	}
+
 	@Override
 	public String toString() {
-		return "UserInfo [wx_id=" + wx_id + ", wx_user_name=" + wx_user_name + ", wx_location=" + wx_location
-				+ ", balance=" + balance + ", id=" + id + "]";
-	}
+		return "UserInfo [wx_id=" + wx_id + ", wx_login_code=" + wx_login_code + ", wx_user_name=" + wx_user_name
+				+ ", wx_location=" + wx_location + ", wx_head_icon=" + wx_head_icon + ", balance=" + balance + ", id="
+				+ id + "]";
+	}	
 	
 	
 }

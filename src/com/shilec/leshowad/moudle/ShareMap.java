@@ -14,8 +14,6 @@ import com.shilec.leshowad.dao.anno.Table;
 @Dao(ShareMapDao.class)
 public class ShareMap {
 	
-	String wx_id; //我的wxid
-	
 	String  shared_wx_id;
 	
 	@Id
@@ -26,14 +24,10 @@ public class ShareMap {
 	float income; //收入
 	
 	int open_count;
-
-	public String getWx_id() {
-		return wx_id;
-	}
-
-	public void setWx_id(String wx_id) {
-		this.wx_id = wx_id;
-	}
+	
+	int aleady_open_count;
+	
+	long date;
 
 	public String getShared_wx_id() {
 		return shared_wx_id;
@@ -75,10 +69,27 @@ public class ShareMap {
 		this.open_count = open_count;
 	}
 
+	public long getDate() {
+		return date;
+	}
+
+	public void setDate(long date) {
+		this.date = date;
+	}
+
+	public int getAleady_open_count() {
+		return aleady_open_count;
+	}
+
+	public void setAleady_open_count(int aleady_open_count) {
+		this.aleady_open_count = aleady_open_count;
+	}
+
 	@Override
 	public String toString() {
-		return "ShareMap [wx_id=" + wx_id + ", shared_wx_id=" + shared_wx_id + ", id=" + id + ", red_packet_id="
-				+ red_packet_id + ", income=" + income + ", open_count=" + open_count + "]";
+		return "ShareMap [shared_wx_id=" + shared_wx_id + ", id=" + id + ", red_packet_id=" + red_packet_id
+				+ ", income=" + income + ", open_count=" + open_count + ", aleady_open_count=" + aleady_open_count
+				+ ", date=" + date + "]";
 	}
 	
 	

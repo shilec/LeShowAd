@@ -45,18 +45,26 @@ public class CreateRedPacketService extends BaseServlet {
 		IDatabaseHelper<RedPacket> helper = MySqlManager.getInstance().getHelper(RedPacket.class);
 		RedPacket redPacket = new RedPacket();
 		redPacket.setAll_money(Integer.parseInt(req.getAttribute("money").toString()));
-		redPacket.setIncome_mode(Integer.parseInt(req.getAttribute("mode").toString()));
+		redPacket.setIncome_mode(Integer.parseInt(req.getAttribute("red_packet_mode").toString()));
 		redPacket.setIs_expire(false);
 		redPacket.setWx_id(userInfo.getWx_id());
 		redPacket.setPacket_count(Integer.parseInt(req.getAttribute("count").toString()));
 		redPacket.setLeave_count(redPacket.getPacket_count());
 		redPacket.setLeave_money(redPacket.getAll_money());
 		if(req.getAttribute("location_limit") != null) {
-			redPacket.setLocations(req.getAttribute("location_limit").toString());
+			redPacket.setLocation_limit(req.getAttribute("location_limit").toString());
+		}
+		
+		if(req.getAttribute("location") != null) {
+			redPacket.setLocation(req.getAttribute("location").toString());
 		}
 		
 		if(req.getAttribute("red_packet_desc") != null) {
 			redPacket.setAd_desc(req.getAttribute("red_packet_desc").toString());
+		}
+		
+		if(req.getAttribute("time_limit") != null) {
+			redPacket.setTime_limit(req.getAttribute("time_limit").toString());
 		}
 		redPacket.setTitle(req.getAttribute("title").toString());
 		redPacket.setImages(req.getAttribute("image_path").toString());

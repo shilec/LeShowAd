@@ -10,7 +10,11 @@ import com.shilec.leshowad.dao.anno.Table;
 @Table("t_red_packet")
 @Dao(RedPacketDao.class)
 public class RedPacket {
-	String locations; //·¶Î§
+	String location_limit; //·¶Î§
+	
+	String location;
+	
+	String time_limit;
 	
 	float all_money; //×Ü½ð¶î
 	
@@ -60,14 +64,6 @@ public class RedPacket {
 	String ad_desc;
 	
 	String images;
-
-	public String getLocations() {
-		return locations;
-	}
-
-	public void setLocations(String locations) {
-		this.locations = locations;
-	}
 
 	public float getAll_money() {
 		return all_money;
@@ -142,13 +138,36 @@ public class RedPacket {
 		this.create_date = create_date;
 	}
 
-	@Override
-	public String toString() {
-		return "RedPacket [locations=" + locations + ", all_money=" + all_money + ", packet_count=" + packet_count
-				+ ", income_mode=" + income_mode + ", leave_count=" + leave_count + ", leave_money=" + leave_money
-				+ ", is_expire=" + is_expire + ", id=" + id + ", wx_id=" + wx_id + ", title=" + title + ", create_date="
-				+ create_date + ", ad_desc=" + ad_desc + ", images=" + images + "]";
+	public String getLocation_limit() {
+		return location_limit;
 	}
 
-	
+	public void setLocation_limit(String location_limit) {
+		this.location_limit = location_limit;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getTime_limit() {
+		return time_limit;
+	}
+
+	public void setTime_limit(String time_limit) {
+		this.time_limit = time_limit;
+	}
+
+	@Override
+	public String toString() {
+		return "RedPacket [location_limit=" + location_limit + ", location=" + location + ", time_limit=" + time_limit
+				+ ", all_money=" + all_money + ", packet_count=" + packet_count + ", income_mode=" + income_mode
+				+ ", leave_count=" + leave_count + ", leave_money=" + leave_money + ", is_expire=" + is_expire + ", id="
+				+ id + ", wx_id=" + wx_id + ", title=" + title + ", create_date=" + create_date + ", ad_desc=" + ad_desc
+				+ ", images=" + images + "]";
+	}
 }

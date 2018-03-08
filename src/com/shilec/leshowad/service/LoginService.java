@@ -54,14 +54,15 @@ public class LoginService extends BaseServlet {
 		String wx_login_code = jObject.optString("wx_login_code");
 		String wx_user_name = jObject.optString("wx_user_name");
 		String wx_location = jObject.optString("wx_location");
+		String wx_head_icon = jObject.optString("wx_head_icon");
 		
 		//¼ì²é
 		if(TextUtils.isEmpty(wx_login_code) || TextUtils.isEmpty(wx_user_name) 
-				|| TextUtils.isEmpty(wx_location)) {
+				|| TextUtils.isEmpty(wx_location) || TextUtils.isEmpty(wx_head_icon)) {
 			
 			String msg = TextUtils.isEmpty(wx_login_code) ? "miss wx_id" :
 				TextUtils.isEmpty(wx_location) ? "miss wx_location" :
-					"miss wx_user_name";
+					TextUtils.isEmpty(wx_user_name) ? "miss wx_user_name" : "miss wx_head_icon";
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("code", Contacts.RESPONSE_CODE.MISS_PARAM);
 			jsonObject.put("msg", msg);
@@ -73,6 +74,7 @@ public class LoginService extends BaseServlet {
 		info.setWx_location(wx_location);
 		info.setWx_user_name(wx_user_name);
 		info.setWx_login_code(wx_login_code);
+		info.setWx_head_icon(wx_head_icon);
 		
 		Log.debug("info = " + info);
 		Log.debug("req = " + req.getServletPath());
