@@ -108,7 +108,7 @@ public class LoginService extends BaseServlet {
 		IDatabaseHelper<UserInfo> helper = MySqlManager.getInstance().getHelper(UserInfo.class);
 		UserInfo load = helper.load("wx_id='" + info.getWx_id() + "'");
 		Log.debug("exist user = " + load);
-		if(TextUtils.isEmpty(load.getWx_id())) {
+		if(load == null || TextUtils.isEmpty(load.getWx_id())) {
 			helper.add(info);
 		} else if(!info.getWx_login_code().equals(load.getWx_login_code())){
 			helper.update(info, new String[] {"wx_login_code"}, "wx_id = '" + info.getWx_id() + "'");

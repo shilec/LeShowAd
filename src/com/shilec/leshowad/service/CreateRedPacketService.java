@@ -68,7 +68,7 @@ public class CreateRedPacketService extends BaseServlet {
 		}
 		redPacket.setTitle(req.getAttribute("title").toString());
 		redPacket.setImages(req.getAttribute("image_path").toString());
-		redPacket.setCreate_date(Long.parseLong(req.getAttribute("create_date").toString()));
+		redPacket.setCreate_date(System.currentTimeMillis());
 		Log.debug("redPakcetInfo == " + redPacket);
 		helper.add(redPacket);
 		

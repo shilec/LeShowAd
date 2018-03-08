@@ -2,6 +2,7 @@ package com.shilec.leshowad.service;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ import com.shilec.leshowad.moudle.RedPacket;
 import com.shilec.leshowad.moudle.ShareMap;
 import com.shilec.leshowad.moudle.UserInfo;
 import com.shilec.leshowad.utils.Contacts;
+import com.shilec.leshowad.utils.Log;
 import com.sun.javafx.collections.MappingChange.Map;
 
 import net.sf.json.JSONObject;
@@ -93,6 +95,7 @@ public class OpenRedPacketService extends BaseServlet{
 		shareMap.setOpen_count(0);
 		shareMap.setRed_packet_id(redPacket.getId());
 		shareMap.setShared_wx_id(userInfo.getWx_id());
+		shareMap.setDate(System.currentTimeMillis());
 		
 		//固定红包 和 随机红包
 		float open_money = 0;
@@ -101,7 +104,8 @@ public class OpenRedPacketService extends BaseServlet{
 		} else {
 			open_money = (float) (0.01f + Math.random() * redPacket.getLeave_money() / 3);
 		}
-		shareMap.setIncome(open_money);
+		DecimalFormat df = new DecimalFormat("#.00");
+		shareMap.setIncome(Float.parseFloat(df.format(open_money)));
 		IDatabaseHelper<ShareMap> shareMapDao = MySqlManager.getInstance().getHelper(ShareMap.class);
 		ShareMap load = shareMapDao.load("red_packet_id = '" + shareMap.getRed_packet_id() + "' "
 				+ "and shared_wx_id = '" + shareMap.getShared_wx_id() + "'");
@@ -111,6 +115,7 @@ public class OpenRedPacketService extends BaseServlet{
 			jObj.put("code", Contacts.RESPONSE_CODE.ALREADY_OPEN);
 			jObj.put("msg", "this red packet already opened!");
 			resp.getWriter().write(jObj.toString());
+			Log.debug("load == " + load);
 			return;
 		}
 		
@@ -126,7 +131,7 @@ public class OpenRedPacketService extends BaseServlet{
 		
 		//更新红包信息
 		redPacket.setLeave_count(redPacket.getLeave_count() - 1);
-		redPacket.setLeave_money(redPacket.getLeave_money() - open_money);
+		redPacket.setLeave_money(redPacket.getLeave_money() - Float.parseFloat(df.format(open_money)));
 		redPacketDao.update(redPacket, new String[] {"leave_count","leave_money"},
 				"id = '" + redPacket.getId() + "'");
 		sendResult(redPacket,shareMap,resp);

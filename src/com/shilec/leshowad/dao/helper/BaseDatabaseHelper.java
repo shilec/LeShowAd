@@ -322,10 +322,8 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 					field.set(t,value);
 					//Log.i("value = " + value + ",key = " + key);
 				}
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				return null;
 			}
 		}
 		return t;

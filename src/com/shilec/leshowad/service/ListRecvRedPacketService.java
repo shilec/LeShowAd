@@ -94,9 +94,9 @@ public class ListRecvRedPacketService extends BaseServlet {
 		} else if(user_type == 0 && red_packet_type != 0) {
 			where = "red_packet_id = '" + red_packet_id + "'";
 		} else if(user_type == 1 && red_packet_type == 0) {
-			where = "wx_id = '" + userInfo.getWx_id() + "'";
+			where = "shared_wx_id = '" + userInfo.getWx_id() + "'";
 		} else if(user_type == 1 && red_packet_type == 1) {
-			where = "wx_id = '" + userInfo.getWx_id() + "' and red_packet_id = '" + red_packet_id + "'";
+			where = "shared_wx_id = '" + userInfo.getWx_id() + "' and red_packet_id = '" + red_packet_id + "'";
 		}
 		
 		List<ShareMap> shareMaps = shareMapDao.loadSome(where, null);
