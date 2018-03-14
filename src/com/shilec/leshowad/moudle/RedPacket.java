@@ -37,6 +37,11 @@ public class RedPacket {
 	
 	long create_date;
 	
+	/**
+	 * openCount + rankMoney
+	 */
+	int rank;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -160,6 +165,14 @@ public class RedPacket {
 
 	public void setTime_limit(String time_limit) {
 		this.time_limit = time_limit;
+	}
+	
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
 	}
 
 	@Override

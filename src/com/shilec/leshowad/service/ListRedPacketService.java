@@ -20,7 +20,7 @@ import net.sf.json.JSONObject;
 
 /**
  * 
- * order_by: 默认为 0 0: money 1: count 2: date
+ * order_by: 默认为 0 0: money 1: count 2: date, 3 rank
  * 
  * location_limit: 默认为 null null 不限制
  * 
@@ -89,6 +89,9 @@ public class ListRedPacketService extends BaseServlet {
 			break;
 		case 2:
 			order = "by create_date desc";
+			break;
+		case 3:
+			order = "by rank";
 			break;
 		default:
 			order = null;

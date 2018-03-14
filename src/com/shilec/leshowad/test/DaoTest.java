@@ -25,7 +25,6 @@ public class DaoTest {
 		map.setOpen_count(10);
 		map.setShared_wx_id("dddd");
 		map.setRed_packet_id(121);
-		map.setWx_id("ddddd");
 		
 		//helper.add(map);
 		helper.update(map, new String[] {"wx_id"},"id = 1");

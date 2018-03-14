@@ -552,11 +552,15 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		
 		Field[] fields2 = mClass.getDeclaredFields();
 		List<Object> values = new ArrayList<>();
+		List<Field> keys = new ArrayList<>();
 		for(Field field : fields2) {
 			if(field.getAnnotation(Ignore.class) != null) {
 				continue;
 			}
-			
+			if(field.getAnnotation(Id.class) != null) {
+				continue;
+			}
+			keys.add(field);
 			String key = field.getName();
 			//如果有field注解使用该注解的value作为字段键值
 			if(field.getAnnotation(com.shilec.leshowad.dao.anno.Field.class) != null) {
@@ -584,7 +588,7 @@ public abstract class BaseDatabaseHelper<T> implements IDatabaseHelper<T>{
 		try {
 			PreparedStatement cmd = connection.prepareStatement(sql);
 			for(int i = 0; i < values.size(); i++) {
-				setValue(i + 1, fields2[i].getType().getSimpleName(), values.get(i), cmd);
+				setValue(i + 1, keys.get(i).getType().getSimpleName(), values.get(i), cmd);
 			}
 			cmd.execute();
 			cmd.close();

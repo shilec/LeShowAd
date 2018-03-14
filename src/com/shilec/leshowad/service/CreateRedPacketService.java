@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.shilec.leshowad.dao.helper.IDatabaseHelper;
 import com.shilec.leshowad.dao.helper.MySqlManager;
 import com.shilec.leshowad.moudle.AdTemplate;
+import com.shilec.leshowad.moudle.MoneyDetail;
 import com.shilec.leshowad.moudle.RedPacket;
 import com.shilec.leshowad.moudle.UserInfo;
 import com.shilec.leshowad.utils.Contacts;
@@ -71,6 +72,20 @@ public class CreateRedPacketService extends BaseServlet {
 		redPacket.setCreate_date(System.currentTimeMillis());
 		Log.debug("redPakcetInfo == " + redPacket);
 		helper.add(redPacket);
+		
+		//更新收入支出表
+		IDatabaseHelper<MoneyDetail> moneyDao = MySqlManager.getInstance()
+				.getHelper(MoneyDetail.class);
+		MoneyDetail moneyDetail = moneyDao.load("wx_id='" + userInfo.getWx_id() + "'");
+		if(moneyDetail == null) {
+			moneyDetail = new MoneyDetail();
+			moneyDetail.setWx_id(userInfo.getWx_id());
+			moneyDetail.setExpenditure(redPacket.getAll_money());
+			moneyDao.add(moneyDetail);
+		} else {
+			moneyDetail.setExpenditure(moneyDetail.getExpenditure() + redPacket.getAll_money());
+			moneyDao.update(moneyDetail, new String[] {"expenditure"},"wx_id='" + userInfo.getWx_id() + "'");
+		}
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("code", Contacts.RESPONSE_CODE.OK);

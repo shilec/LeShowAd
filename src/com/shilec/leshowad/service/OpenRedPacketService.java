@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.shilec.leshowad.dao.helper.IDatabaseHelper;
 import com.shilec.leshowad.dao.helper.MySqlManager;
+import com.shilec.leshowad.moudle.MoneyDetail;
 import com.shilec.leshowad.moudle.RED_PACKET_MODE;
 import com.shilec.leshowad.moudle.RedPacket;
 import com.shilec.leshowad.moudle.ShareMap;
@@ -119,6 +120,20 @@ public class OpenRedPacketService extends BaseServlet{
 			return;
 		}
 		
+		//更新收入支出表
+		IDatabaseHelper<MoneyDetail> moneyDao = MySqlManager.getInstance()
+				.getHelper(MoneyDetail.class);
+		MoneyDetail moneyDetail = moneyDao.load("wx_id='" + userInfo.getWx_id() + "'");
+		if(moneyDetail == null) {
+			moneyDetail = new MoneyDetail();
+			moneyDetail.setIncome(shareMap.getIncome());
+			moneyDao.add(moneyDetail);
+		} else {
+			moneyDetail.setIncome(moneyDetail.getIncome() + shareMap.getIncome());
+			moneyDao.update(moneyDetail,new String[] {"income"},
+					"wx_id='" + userInfo.getWx_id() + "'");
+		}
+		
 		if(load == null) {
 			shareMap.setAleady_open_count(1);
 			shareMapDao.add(shareMap);
@@ -132,6 +147,8 @@ public class OpenRedPacketService extends BaseServlet{
 		//更新红包信息
 		redPacket.setLeave_count(redPacket.getLeave_count() - 1);
 		redPacket.setLeave_money(redPacket.getLeave_money() - Float.parseFloat(df.format(open_money)));
+		//rank值的大小来 确定热门红包的顺序
+		redPacket.setRank(redPacket.getRank() + 1);
 		redPacketDao.update(redPacket, new String[] {"leave_count","leave_money"},
 				"id = '" + redPacket.getId() + "'");
 		sendResult(redPacket,shareMap,resp);
