@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.shilec.leshowad.dao.helper.IDatabaseHelper;
 import com.shilec.leshowad.dao.helper.MySqlManager;
-import com.shilec.leshowad.moudle.MoneyDetail;
 import com.shilec.leshowad.moudle.RED_PACKET_MODE;
 import com.shilec.leshowad.moudle.RedPacket;
 import com.shilec.leshowad.moudle.ShareMap;
@@ -121,19 +120,10 @@ public class OpenRedPacketService extends BaseServlet{
 		}
 		
 		//更新收入支出表
-		IDatabaseHelper<MoneyDetail> moneyDao = MySqlManager.getInstance()
-				.getHelper(MoneyDetail.class);
-		MoneyDetail moneyDetail = moneyDao.load("wx_id='" + userInfo.getWx_id() + "'");
-		if(moneyDetail == null) {
-			moneyDetail = new MoneyDetail();
-			moneyDetail.setIncome(shareMap.getIncome());
-			moneyDao.add(moneyDetail);
-		} else {
-			moneyDetail.setIncome(moneyDetail.getIncome() + shareMap.getIncome());
-			moneyDao.update(moneyDetail,new String[] {"income"},
-					"wx_id='" + userInfo.getWx_id() + "'");
-		}
+		userInfo.setIncome(userInfo.getIncome() + shareMap.getIncome());
+		userDao.update(userInfo, new String[] {"income"},"wx_id='" + userInfo.getWx_id() + "'");
 		
+		//更新红包领取记录
 		if(load == null) {
 			shareMap.setAleady_open_count(1);
 			shareMapDao.add(shareMap);

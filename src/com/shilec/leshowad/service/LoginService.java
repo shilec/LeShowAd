@@ -48,6 +48,10 @@ public class LoginService extends BaseServlet {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
 		String line = reader.readLine();
 		Log.i2file("POST PARAM === " + line);
+		if(line == null) {
+			resp.sendError(401);
+			return;
+		}
 		
 		//¶ÁÈ¡²ÎÊý
 		JSONObject jObject = JSONObject.fromObject(line);

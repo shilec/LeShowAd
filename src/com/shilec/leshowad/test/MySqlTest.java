@@ -24,7 +24,6 @@ public class MySqlTest {
 		
 		UserInfo info = new UserInfo();
 		info.setWx_id("是撒大声地");
-		info.setBalance(911111119.112f);
 		info.setWx_user_name("十离家阿萨德");
 		info.setWx_location("adasda");
 	

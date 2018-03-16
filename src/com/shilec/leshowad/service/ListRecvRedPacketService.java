@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.security.PrivilegedActionException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,11 +21,16 @@ import com.shilec.leshowad.moudle.RedPacket;
 import com.shilec.leshowad.moudle.ShareMap;
 import com.shilec.leshowad.moudle.UserInfo;
 import com.shilec.leshowad.utils.Contacts;
+import com.shilec.leshowad.utils.Log;
+import com.shilec.leshowad.utils.TextUtils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
+ * 获取收到的红包列表
+ * 
  * wx_login_code: wx user login code 
  * user_type: 0 all, 1 current user
  * red_packet_type: 0 all, 1 
@@ -98,23 +105,41 @@ public class ListRecvRedPacketService extends BaseServlet {
 		} else if(user_type == 1 && red_packet_type == 1) {
 			where = "shared_wx_id = '" + userInfo.getWx_id() + "' and red_packet_id = '" + red_packet_id + "'";
 		}
-		
+		//加载红包记录表
 		List<ShareMap> shareMaps = shareMapDao.loadSome(where, null);
-		List<UserInfo> listUserInfos = listUserInfo(userDao,shareMaps,order_by);
 		
-		JSONArray jsonArray = new JSONArray();
-		for(int i = 0; i < shareMaps.size(); i++) {
-			JSONObject jShareMap = JSONObject.fromObject(shareMaps.get(i));
-			JSONObject jUserInfo = JSONObject.fromObject(listUserInfos.get(i));
-			jUserInfo.remove("wx_id");
-			jShareMap.remove("shared_wx_id");
+		//加载红包记录表对应的用户
+		List<UserInfo> listUserInfos = listUserInfo(userDao,shareMaps,order_by);
+		List<Map<String, Object>> res = new ArrayList<>();
+		Log.debug("user info size = " + listUserInfos.size());
+		for(UserInfo info : listUserInfos) {
+			Map<String, Object> item = null;
+			for(int i = 0; i < res.size(); i++) {
+				Map<String, Object> map = res.get(i);
+				if(map.get("user_info").equals(info)) {
+					item = map;
+					break;
+				}
+			}
 			
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("user_info", jUserInfo);
-			jsonObject.put("income_info", jShareMap);
-			jsonArray.add(jsonObject);
+			if(item == null) {
+				item = new HashMap<>();
+				item.put("user_info", info);
+				item.put("history", new ArrayList<>());
+				res.add(item);
+			}
+			
+			List<Object> history = (List<Object>) item.get("history");
+			Log.debug("share map size =======" + shareMaps.size());
+			for(int i = 0; i < shareMaps.size(); i++) {
+				if(TextUtils.equals(info.getWx_id(), shareMaps.get(i).getShared_wx_id())) {
+					history.add(shareMaps.get(i));
+				}
+			}
 		}
 		
+		JSONArray jsonArray = JSONArray.fromObject(res);
+		Log.debug("ret ===== " + res.toString());
 		jObjet.put("list", jsonArray);
 		resp.getWriter().write(jObjet.toString());
 	}
@@ -123,7 +148,9 @@ public class ListRecvRedPacketService extends BaseServlet {
 		List<UserInfo> userInfos = new ArrayList<>();
 		for(ShareMap map : shareMaps) {
 			UserInfo userInfo = userDao.load("wx_id = '" + map.getShared_wx_id() + "'");
-			userInfos.add(userInfo);
+			if(!userInfos.contains(userInfo)) {
+				userInfos.add(userInfo);
+			}
 		}
 		return userInfos;
 	}

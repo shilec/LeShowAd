@@ -2,6 +2,7 @@ package com.shilec.leshowad.moudle;
 
 import com.shilec.leshowad.dao.UserDao;
 import com.shilec.leshowad.dao.anno.*;
+import com.shilec.leshowad.utils.TextUtils;
 
 @Table("t_user")
 @Dao(UserDao.class)
@@ -17,7 +18,11 @@ public class UserInfo {
 	
 	String wx_head_icon;
 	
-	float balance;
+	private float income; //收入
+	
+	private float expenditure; //支出
+	
+	private float withdrawals; //提现的金额
 	
 	@Id
 	int id;
@@ -46,14 +51,6 @@ public class UserInfo {
 		this.wx_location = wx_location;
 	}
 
-	public float getBalance() {
-		return balance;
-	}
-
-	public void setBalance(float balance) {
-		this.balance = balance;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -62,8 +59,6 @@ public class UserInfo {
 		this.id = id;
 	}
 	
-	
-
 	public String getWx_login_code() {
 		return wx_login_code;
 	}
@@ -80,12 +75,38 @@ public class UserInfo {
 		this.wx_head_icon = wx_head_icon;
 	}
 
+	public float getIncome() {
+		return income;
+	}
+
+	public void setIncome(float income) {
+		this.income = income;
+	}
+
+	public float getExpenditure() {
+		return expenditure;
+	}
+
+	public void setExpenditure(float expenditure) {
+		this.expenditure = expenditure;
+	}
+
+	public float getWithdrawals() {
+		return withdrawals;
+	}
+
+	public void setWithdrawals(float withdrawals) {
+		this.withdrawals = withdrawals;
+	}
+
 	@Override
-	public String toString() {
-		return "UserInfo [wx_id=" + wx_id + ", wx_login_code=" + wx_login_code + ", wx_user_name=" + wx_user_name
-				+ ", wx_location=" + wx_location + ", wx_head_icon=" + wx_head_icon + ", balance=" + balance + ", id="
-				+ id + "]";
-	}	
-	
-	
+	public boolean equals(Object obj) {
+		
+		if(!(obj instanceof UserInfo)) {
+			return false;
+		}
+		
+		UserInfo temp = (UserInfo) obj;
+		return TextUtils.equals(temp.wx_id, wx_id);
+	}
 }

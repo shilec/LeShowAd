@@ -19,7 +19,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * 
+ * 获取红包列表
  * order_by: 默认为 0 0: money 1: count 2: date, 3 rank
  * 
  * location_limit: 默认为 null null 不限制
