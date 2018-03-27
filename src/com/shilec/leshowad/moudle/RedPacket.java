@@ -10,9 +10,11 @@ import com.shilec.leshowad.dao.anno.Table;
 @Table("t_red_packet")
 @Dao(RedPacketDao.class)
 public class RedPacket {
-	String location_limit; //范围
+	String location_limit; //范围 经度，纬度
 	
-	String location;
+	String location; //经度，纬度
+	
+	String location_desc; //位置的描述
 	
 	String time_limit;
 	
@@ -174,13 +176,24 @@ public class RedPacket {
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
+	
+
+	public String getLocation_desc() {
+		return location_desc;
+	}
+
+	public void setLocation_desc(String location_desc) {
+		this.location_desc = location_desc;
+	}
 
 	@Override
 	public String toString() {
-		return "RedPacket [location_limit=" + location_limit + ", location=" + location + ", time_limit=" + time_limit
-				+ ", all_money=" + all_money + ", packet_count=" + packet_count + ", income_mode=" + income_mode
-				+ ", leave_count=" + leave_count + ", leave_money=" + leave_money + ", is_expire=" + is_expire + ", id="
-				+ id + ", wx_id=" + wx_id + ", title=" + title + ", create_date=" + create_date + ", ad_desc=" + ad_desc
-				+ ", images=" + images + "]";
+		return "RedPacket [location_limit=" + location_limit + ", location=" + location + ", location_desc="
+				+ location_desc + ", time_limit=" + time_limit + ", all_money=" + all_money + ", packet_count="
+				+ packet_count + ", income_mode=" + income_mode + ", leave_count=" + leave_count + ", leave_money="
+				+ leave_money + ", is_expire=" + is_expire + ", id=" + id + ", wx_id=" + wx_id + ", title=" + title
+				+ ", create_date=" + create_date + ", rank=" + rank + ", ad_desc=" + ad_desc + ", images=" + images
+				+ "]";
 	}
+
 }

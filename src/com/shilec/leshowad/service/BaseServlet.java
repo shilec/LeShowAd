@@ -79,7 +79,9 @@ public abstract class BaseServlet extends HttpServlet{
 			}
 			req.getSession().setAttribute("wx_login_code", wx_login_code);
 		}
-
+		
+		//Í³Ò»±àÂë
+		resp.setCharacterEncoding("utf-8");
 		doPost1(req, resp);
 	}
 	

@@ -59,6 +59,10 @@ public class CreateRedPacketService extends BaseServlet {
 			redPacket.setLocation(req.getAttribute("location").toString());
 		}
 		
+		if(req.getAttribute("location_desc") != null) {
+			redPacket.setLocation_desc(req.getAttribute("loaction_desc").toString());
+		}
+		
 		if(req.getAttribute("red_packet_desc") != null) {
 			redPacket.setAd_desc(req.getAttribute("red_packet_desc").toString());
 		}
